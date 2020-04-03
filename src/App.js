@@ -15,14 +15,25 @@ function App() {
     .then(data => {
       setLoading(false)
       data.map(post=>{
-        post.comments = comments;
+        return post.comments = comments;
       })
       setPosts(data.slice(0,2))
     })
   },[])
+  //Check values
+  // console.log(posts)
+  // console.log(comments)
 
-  console.log(posts)
-
+  //add Comment
+  const addComment = (id, comment) => {
+    const newComment = {
+      id: uuidv4(),
+      postId: id,
+      userId: 1,
+      body: comment
+    }
+    setComments([...comments, newComment])
+  }
   //add post
   const addPost = (formData) => {
     setPosts([
@@ -56,12 +67,15 @@ function App() {
 
   //display posts if there are retrieved posts
   const allPosts = posts.length ? 
+  //Post Item PROPS
   posts.map(post=>(
     <PostItem 
       key={post.id} 
       post={post} 
       editPost={editPost}
       deletePost={deletePost}
+      addComment={addComment}
+      comments={comments}
     />   
   )).reverse()
   : <h1>No posts to show</h1>

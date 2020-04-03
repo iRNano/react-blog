@@ -1,7 +1,9 @@
 import React, {Fragment, useState}from "react";
 import EditForm from "./forms/EditForm";
+import CommentForm from "./forms/CommentForm";
+import CommentItem from "./CommentItem";
 
-const PostItem = ({post: {title, body,userId, id}, editPost,deletePost}) => {
+const PostItem = ({post: {title, body,userId, id}, editPost,deletePost, addComment,comments}) => {
     const style = {
         background: "#eee",
         padding: "10px",
@@ -14,6 +16,7 @@ const PostItem = ({post: {title, body,userId, id}, editPost,deletePost}) => {
         <Fragment>
             <div style = {style}>               
                 {editing? 
+                    //edit form props
                     <EditForm 
                         editPost={editPost}
                         deletePost={deletePost} 
@@ -30,7 +33,10 @@ const PostItem = ({post: {title, body,userId, id}, editPost,deletePost}) => {
                         <button onClick={()=>setEditing(true)}>Edit</button> 
                         <button onClick={()=>deletePost(id)}>Delete</button>
                     </Fragment>
-                }               
+                }
+                
+                <CommentForm postId={id} addComment={addComment} />               
+                <CommentItem comments={comments} postId={id} />
             </div>
         </Fragment>
     )
