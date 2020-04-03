@@ -3,7 +3,7 @@ import EditForm from "./forms/EditForm";
 import CommentForm from "./forms/CommentForm";
 import CommentItem from "./CommentItem";
 
-const PostItem = ({post: {title, body,userId, id}, editPost,deletePost, addComment,comments}) => {
+const PostItem = ({post: {title, body,userId, id}, editPost,deletePost, addComment,comments,editComment,deleteComment}) => {
     const style = {
         background: "#eee",
         padding: "10px",
@@ -33,10 +33,9 @@ const PostItem = ({post: {title, body,userId, id}, editPost,deletePost, addComme
                         <button onClick={()=>setEditing(true)}>Edit</button> 
                         <button onClick={()=>deletePost(id)}>Delete</button>
                     </Fragment>
-                }
-                
-                <CommentForm postId={id} addComment={addComment} />               
-                <CommentItem comments={comments} postId={id} />
+                }                           
+                <CommentItem comments={comments} postId={id} editComment={editComment} deleteComment={deleteComment}/>
+                <CommentForm postId={id} addComment={addComment} />  
             </div>
         </Fragment>
     )

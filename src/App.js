@@ -4,22 +4,27 @@ import AddForm from './components/forms/AddForm';
 import {v4 as uuidv4} from "uuid";
 
 function App() {
+  //Declare hooks
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [comments, setComments] = useState([])
+
   //fetch data
   useEffect( () => {
     fetch("https://jsonplaceholder.typicode.com/posts")
     .then(res => res.json())
     .then(data => {
       setLoading(false)
+      //add comments properties to post object
       data.map(post=>{
         return post.comments = comments;
       })
+      //slice that array from 0 - 2 position
       setPosts(data.slice(0,2))
     })
-  },[])
+    // alert("Hello World")
+  },[comments])
   //Check values
   // console.log(posts)
   // console.log(comments)
@@ -33,6 +38,25 @@ function App() {
       body: comment
     }
     setComments([...comments, newComment])
+  }
+  //edit comment
+
+  const editComment = (updatedComment) => {
+    const updatedComments = comments.map(comment => {
+      return comment.id === updatedComment.id ? {...comment, body:updatedComment.body} : comment;
+    })
+    setComments(updatedComments);
+  }
+
+  //delete comment
+  const deleteComment = (commentId) =>{
+    // alert("delete function")
+    console.log(commentId)
+    const updatedComments = comments.filter(comment => {
+      return comment.id !== commentId
+    })
+    setComments(updatedComments)
+    
   }
   //add post
   const addPost = (formData) => {
@@ -76,13 +100,18 @@ function App() {
       deletePost={deletePost}
       addComment={addComment}
       comments={comments}
+      editComment={editComment}
+      deleteComment={deleteComment}
     />   
   )).reverse()
   : <h1>No posts to show</h1>
+
+  //If loading is done, show allPosts 
   const isLoading = loading ?  <h1>Loading....</h1>: allPosts;
+
   return (
     <div className="App">
-      {/* Add posts */}
+      {/* Add posts form*/}
       {
         showForm? 
         <AddForm 
